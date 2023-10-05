@@ -1,6 +1,5 @@
 package br.com.alura.adopet.api.service;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -13,7 +12,6 @@ import br.com.alura.adopet.api.dto.ReprovacaoAdocaoDto;
 import br.com.alura.adopet.api.dto.SolicitacaoAdocaoDto;
 import br.com.alura.adopet.api.model.Adocao;
 import br.com.alura.adopet.api.model.Pet;
-import br.com.alura.adopet.api.model.StatusAdocao;
 import br.com.alura.adopet.api.model.Tutor;
 import br.com.alura.adopet.api.repository.AdocaoRepository;
 import br.com.alura.adopet.api.repository.PetRepository;
@@ -46,12 +44,12 @@ public class AdocaoService {
 		
 		validacoes.forEach(v -> v.validar(dto));
 
-		Adocao adocao = new Adocao();
-		adocao.setData(LocalDateTime.now());
-		adocao.setStatus(StatusAdocao.AGUARDANDO_AVALIACAO);
-		adocao.setPet(pet);
-		adocao.setTutor(tutor);
-		adocao.setMotivo(dto.getMotivo());
+		Adocao adocao = new Adocao(tutor, pet, dto.getMotivo());
+//		adocao.setData(LocalDateTime.now());
+//		adocao.setStatus(StatusAdocao.AGUARDANDO_AVALIACAO);
+//		adocao.setPet(pet);
+//		adocao.setTutor(tutor);
+//		adocao.setMotivo(dto.getMotivo());
 		repository.save(adocao);
 
 		emailService.enviarEmail(adocao.getPet().getAbrigo().getEmail(), "Solicitação de adoção",
@@ -65,7 +63,7 @@ public class AdocaoService {
 	public void aprovar(AprovacaoAdocaoDto dto) {
 
 		Adocao adocao = repository.getReferenceById(dto.getIdAdocao());
-		adocao.setStatus(StatusAdocao.APROVADO);
+		adocao.marcarComoAprovado();// .setStatus(StatusAdocao.APROVADO);
 		repository.save(adocao);
 
 		emailService.enviarEmail(adocao.getTutor().getEmail(), "Adoção aprovada",
@@ -80,8 +78,7 @@ public class AdocaoService {
 	@Transactional
 	public void reprovar(ReprovacaoAdocaoDto dto) {
 		Adocao adocao = repository.getReferenceById(dto.getIdAdocao());
-		adocao.setStatus(StatusAdocao.REPROVADO);
-		adocao.setJustificativaStatus(dto.getJustificativa());
+		adocao.marcarComoReprovado(dto.getJustificativa());
 		repository.save(adocao);
 
 		emailService.enviarEmail(adocao.getTutor().getEmail(), "Adoção reprovada",

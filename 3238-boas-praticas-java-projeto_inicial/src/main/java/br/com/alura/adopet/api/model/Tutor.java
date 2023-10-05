@@ -32,7 +32,7 @@ public class Tutor {
     @Column(name = "email")
     private String email;
 
-    @OneToMany(mappedBy = "tutor", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "tutor")//Padrão é Lazy
     @JsonManagedReference("tutor_adocoes")
     private List<Adocao> adocoes;
 
