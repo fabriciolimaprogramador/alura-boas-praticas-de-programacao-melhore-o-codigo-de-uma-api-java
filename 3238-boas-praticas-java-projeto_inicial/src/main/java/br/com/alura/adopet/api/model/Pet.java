@@ -2,6 +2,7 @@ package br.com.alura.adopet.api.model;
 
 import java.util.Objects;
 
+import br.com.alura.adopet.api.dto.CadastroPetDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -12,8 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "pets")
@@ -24,22 +23,16 @@ public class Pet {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
     private TipoPet tipo;
 
-    @NotBlank
     private String nome;
 
-    @NotBlank
     private String raca;
 
-    @NotNull
     private Integer idade;
 
-    @NotBlank
     private String cor;
 
-    @NotNull
     private Float peso;
 
     private Boolean adotado;
@@ -49,8 +42,25 @@ public class Pet {
 
     @OneToOne(mappedBy = "pet", fetch = FetchType.LAZY)
     private Adocao adocao;
+    
+    public Pet() {}
+    
+    
 
-    @Override
+    public Pet(CadastroPetDto dto, Abrigo abrigo) {
+		this.tipo = dto.getTipo();
+		this.nome = dto.getNome();
+		this.raca = dto.getRaca();
+		this.idade = dto.getIdade();
+		this.cor = dto.getCor();
+		this.peso = dto.getPeso();
+		this.abrigo = abrigo;
+		this.adotado = false;
+	}
+
+
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

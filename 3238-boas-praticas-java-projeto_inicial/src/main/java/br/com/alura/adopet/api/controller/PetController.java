@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.alura.adopet.api.dto.PetsDisponiveisDto;
+import br.com.alura.adopet.api.dto.PetDto;
+import br.com.alura.adopet.api.dto.PetRecordDto;
 import br.com.alura.adopet.api.service.PetService;
 
 @RestController
@@ -19,9 +20,15 @@ public class PetController {
 	private PetService service;
 
 	@GetMapping
-	public ResponseEntity<List<PetsDisponiveisDto>> listarTodosDisponiveis() {
-		List<PetsDisponiveisDto> dtos = service.listarTodosDisponiveis();
-		return ResponseEntity.ok(dtos);
+	public ResponseEntity<List<PetDto>> listarTodosDisponiveis() {
+		List<PetDto> pets = service.buscarPetsDisponiveis();
+		return ResponseEntity.ok(pets);
+	}
+
+	@GetMapping
+	public ResponseEntity<List<PetRecordDto>> listarTodosDisponiveisRecord() {
+		List<PetRecordDto> pets = service.buscarPetsDisponiveisStreamMapRecord();
+		return ResponseEntity.ok(pets);
 	}
 
 }
