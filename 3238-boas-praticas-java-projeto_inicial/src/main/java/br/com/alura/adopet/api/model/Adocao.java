@@ -1,18 +1,9 @@
 package br.com.alura.adopet.api.model;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "adocoes")
@@ -36,18 +27,18 @@ public class Adocao {
     private StatusAdocao status;
 
     private String justificativaStatus;
-    
-    public Adocao() {}
 
     public Adocao(Tutor tutor, Pet pet, String motivo) {
-		this.tutor = tutor;
-		this.pet = pet;
-		this.motivo = motivo;
-		this.status = StatusAdocao.AGUARDANDO_AVALIACAO;
-		this.data = LocalDateTime.now();
-	}
+        this.tutor = tutor;
+        this.pet = pet;
+        this.motivo = motivo;
+        this.status = StatusAdocao.AGUARDANDO_AVALIACAO;
+        this.data = LocalDateTime.now();
+    }
 
-	@Override
+    public Adocao(){}
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -64,43 +55,40 @@ public class Adocao {
         return id;
     }
 
-
     public LocalDateTime getData() {
         return data;
     }
-
 
     public Tutor getTutor() {
         return tutor;
     }
 
-
     public Pet getPet() {
         return pet;
     }
 
+    public void setPet(Pet pet) {
+        this.pet = pet;
+    }
 
     public String getMotivo() {
         return motivo;
     }
 
-
     public StatusAdocao getStatus() {
         return status;
     }
-
 
     public String getJustificativaStatus() {
         return justificativaStatus;
     }
 
-    
-    public void marcarComoAprovado() {
-    	this.status = StatusAdocao.APROVADO;
+    public void marcarComoAprovada() {
+        this.status = StatusAdocao.APROVADO;
     }
-    
-    public void marcarComoReprovado(String justificativa) {
-    	this.status = StatusAdocao.REPROVADO;
-    	this.justificativaStatus = justificativa;
+
+    public void marcarComoReprovada(String justificativa) {
+        this.status = StatusAdocao.REPROVADO;
+        this.justificativaStatus = justificativa;
     }
 }

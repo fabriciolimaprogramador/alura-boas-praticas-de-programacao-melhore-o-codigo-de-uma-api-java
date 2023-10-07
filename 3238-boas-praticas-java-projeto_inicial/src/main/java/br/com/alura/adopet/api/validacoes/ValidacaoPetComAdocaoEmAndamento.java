@@ -11,21 +11,16 @@ import br.com.alura.adopet.api.repository.AdocaoRepository;
 @Component
 public class ValidacaoPetComAdocaoEmAndamento implements ValidacaoSolicitacaoAdocao {
 
-	@Autowired
-	private AdocaoRepository adocaoRepository;
-	
-//	@Autowired
-//	private PetRepository petRepository;
+    @Autowired
+    private AdocaoRepository adocaoRepository;
 
-	public void validar(SolicitacaoAdocaoDto dto) {
-//		List<Adocao> adocoes = adocaoRepository.findAll();
-		boolean petTemAdocaoEmAdamento = adocaoRepository.existsByPedIdAndStatus(dto.getIdPet(), StatusAdocao.AGUARDANDO_AVALIACAO);
-//		Pet pet = petRepository.getReferenceById(dto.getIdPet());
-//		for (Adocao a : adocoes) {
-			if (petTemAdocaoEmAdamento) {
-				throw new ValidacaoException("Pet já está aguardando avaliação para ser adotado!");
-			}
-//		}
-	}
+    public void validar(SolicitacaoAdocaoDto dto) {
+        boolean petTemAdocaoEmAndamento = adocaoRepository
+                .existsByPetIdAndStatus(dto.idPet(), StatusAdocao.AGUARDANDO_AVALIACAO);
+
+        if (petTemAdocaoEmAndamento) {
+            throw new ValidacaoException("Pet já está aguardando avaliação para ser adotado!");
+        }
+    }
 
 }

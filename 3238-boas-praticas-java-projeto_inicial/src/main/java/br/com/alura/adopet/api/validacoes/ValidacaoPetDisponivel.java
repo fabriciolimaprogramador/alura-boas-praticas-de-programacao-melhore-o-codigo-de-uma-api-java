@@ -10,16 +10,15 @@ import br.com.alura.adopet.api.repository.PetRepository;
 
 @Component
 public class ValidacaoPetDisponivel implements ValidacaoSolicitacaoAdocao {
-	
-	@Autowired
-	private PetRepository petRepository;
-	
-	public void validar(SolicitacaoAdocaoDto dto) {
-		Pet pet = petRepository.getReferenceById(dto.getIdPet());
 
-		if (pet.getAdotado()) {
-			throw new ValidacaoException("Pet já foi adotado!");
-		}
-	}
+    @Autowired
+    private PetRepository petRepository;
+
+    public void validar(SolicitacaoAdocaoDto dto) {
+        Pet pet = petRepository.getReferenceById(dto.idPet());
+        if (pet.getAdotado()) {
+            throw new ValidacaoException("Pet já foi adotado!");
+        }
+    }
 
 }
